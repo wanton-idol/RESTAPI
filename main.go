@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/wanton-idol/RESTAPI/user"
 
 	"github.com/gorilla/mux"
 )
@@ -10,17 +13,19 @@ import (
 func initializeRouter() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/records", GetRecords).Methods("GET")
-	r.HandleFunc("/records/{id}", GetRecord).Methods("GET")
-	r.HandleFunc("/filterrecords", FilterRecords).Methods("GET")
-	r.HandleFunc("/records", CreateRecord).Methods("POST")
-	r.HandleFunc("/records/{id}", UpdateRecord).Methods("PUT")
-	r.HandleFunc("/records/{id}", DeleteRecord).Methods("DELETE")
+	r.HandleFunc("/records", user.GetRecords).Methods("GET")
+	r.HandleFunc("/records/{id}", user.GetRecord).Methods("GET")
+	r.HandleFunc("/filterrecords", user.FilterRecords).Methods("GET")
+	r.HandleFunc("/records", user.CreateRecord).Methods("POST")
+	r.HandleFunc("/records/{id}", user.UpdateRecord).Methods("PUT")
+	r.HandleFunc("/records/{id}", user.DeleteRecord).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":9000", r))
 }
 
 func main() {
-	InitialMigration()
+	fmt.Println("Building RESTful API")
+	fmt.Println("API is started...")
+	user.InitialMigration()
 	initializeRouter()
 }
